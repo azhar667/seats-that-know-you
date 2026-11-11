@@ -1,41 +1,56 @@
-# Seats That Know You — shared project website
+# Seats That Know You — Team A website
 
-## What's included
-- `index.html` — responsive project presentation with in-page editing.
-- `archive.md` — complete project archive supplied by the team.
-- `presentation-2026-11-11.pdf` — this week's presentation.
-- `setup.sql` — shared editing database setup for Supabase.
+This version replaces the raw, pasted archive with an English editorial project archive organised into visual chapters. It also embeds the 11 November 2026 presentation in an in-page PDF slide viewer.
 
-## Publish the website
-1. Create a free site in Netlify (or another static host).
-2. Drag the entire `seats-that-know-you-site` folder into Netlify Drop.
-3. Keep all four files together. The site reads `archive.md` and links to the PDF beside `index.html`.
+## Files to publish to GitHub Pages
 
-## Enable shared editing (one-time setup)
-This is needed for edits to sync between different people/devices. Without it, browser edits are saved only on that device.
+Keep these files in the repository root:
 
-1. Create a Supabase project at https://supabase.com/.
-2. In Supabase, open **SQL Editor** and open the included `setup.sql`.
-3. Replace `YOUR_LONG_EDITOR_KEY` in the SQL with a long random secret (at least 32 characters). Run the SQL.
-4. In Supabase **Project Settings → API**, copy the Project URL and anon/publishable key.
-5. Open the deployed site → **Shared editing**. Paste the Project URL, anon key, and the exact same editor key. Save connection.
-6. The first connection creates the initial shared page data. The page will then load shared edits from the database and check for updates every few seconds.
+- `index.html`
+- `presentation-2026-11-11.pdf`
+- `storage-setup.sql` (for Supabase presentation uploads)
 
-## Give edit permission
-- View-only link: the normal website URL.
-- Editor link: `https://YOUR-SITE.netlify.app/#edit=YOUR_LONG_EDITOR_KEY`
-- Share the editor link only with people who should be able to edit. Anyone with this link can edit the page.
-- Each editor opens the link, then uses **Save changes**. Changes sync to everyone using the same connected database.
+The site no longer fetches or displays `archive.md`. You can remove the old Azerbaijani `archive.md` from the GitHub repository if you do not want that raw source file publicly accessible. The important project history has been translated, condensed and reorganised in the English Project Archive section inside the website.
 
-## Editing
-- Click **Edit site** and edit the highlighted text directly.
-- Click **+ Add update** to add a dated team update.
-- Click **Save changes** to publish.
-- Use **Cancel** to discard unsaved text edits.
-- The full archive is included in the Archive section and can be downloaded. The PDF link opens the 11 November presentation.
+## Update the existing GitHub Pages site
 
-## Important notes
-- The Supabase URL and anon key are public client-side values; the editor key is the permission secret.
-- The editor key is present in the editor URL fragment. Do not post that link publicly.
-- Keep a private copy of the editor key. If it is exposed, rotate it by updating the hash in `private.project_edit_secrets` using the SQL editor, then issue a new editor link.
-- This is a first working version: it edits text content and adds project log entries; it does not yet provide a full visual block/page builder or simultaneous character-level co-editing. Changes are shared after Save, with periodic refresh for other viewers.
+1. Open your `seats-that-know-you` GitHub repository.
+2. Upload the new `index.html`, replacing the existing one.
+3. Upload `storage-setup.sql` to the repository root.
+4. Keep `presentation-2026-11-11.pdf` in the repository root. If it is already there, you do not need to upload it again.
+5. Commit the changes. GitHub Pages will redeploy automatically.
+
+## Enable presentation management (one-time Supabase step)
+
+Your original Supabase shared-editing setup should already be in place. To let editors upload, replace and delete presentation PDFs:
+
+1. Open the `storage-setup.sql` file in this folder.
+2. Copy its complete contents.
+3. In Supabase, open **SQL Editor → New query**.
+4. Paste and run the script.
+
+This creates a public-read `presentations` storage bucket. Upload, update and delete policies call the existing `public.can_edit_team_a()` function, which checks the same `x-edit-key` header as the site's shared editor. Do not rerun or change the original editor secret unless you intend to rotate it.
+
+## How the website editor works
+
+- Readers can view the site and the presentation library.
+- Editors open the site using the shared editor link containing `#edit=YOUR_EDITOR_KEY`.
+- Each editor device connects once using the Supabase Project URL, anon/publishable key and editor key.
+- **Edit site** enables inline editing for the page copy and the English archive chapters.
+- **Presentations** in the bottom editor bar opens the presentation manager.
+- Editors can add a PDF, change a presentation's title/date/description, replace its PDF, or delete it.
+- The original 11 November deck is served from the GitHub Pages repository. New and replaced PDFs are uploaded to Supabase Storage.
+- Changes to the site content and presentation list are saved to the shared Supabase row and are polled by other visitors approximately every 7 seconds.
+
+This is save-and-sync collaboration, not simultaneous Google Docs-style editing. Avoid editing the same item at the same time.
+
+## Presentation viewer
+
+The PDF is rendered in the page using PDF.js. Visitors can use Previous / Next, tap the numbered page strip, click the left/right sides of the slide, use keyboard arrow keys, or swipe on touch screens.
+
+## Notes
+
+- GitHub Pages hosts the static website; it does not provide the shared database.
+- Supabase Free plan limits and inactivity policies can change. Check your dashboard for current usage and project status.
+- The PDF viewer loads PDF.js from a CDN, so the first load requires an internet connection.
+- The editor key is a shared secret. Share the editor URL only with teammates who should be able to make changes. Never put the key in a public repository or a public document.
