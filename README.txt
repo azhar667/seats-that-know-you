@@ -1,25 +1,14 @@
-MovI — Team A website package
+MovI website — v3
 
-FILES
-- index.html: the new scroll-based MovI presentation website.
-- prototype.html: the existing interactive face-recognition / seat-personalisation prototype, embedded in the website and also available as a standalone page.
+Files
+- index.html: main presentational website.
+- prototype.html: existing interactive prototype, retained for later integration but not embedded in the current presentation page.
 
-PUBLISH ON GITHUB PAGES
-1. Unzip this package.
-2. Open your existing GitHub repository.
-3. Upload the CONTENTS of this folder to the repository root (not the folder itself).
-4. Replace the existing index.html and add/replace prototype.html.
-5. Commit the changes. Keep GitHub Pages set to main / (root).
-6. Wait for the Pages deployment, then hard-refresh the public website (Cmd+Shift+R).
+Updates in v3
+- Hero title now reads MovI: “Mov” uses a turquoise outline and “I” remains black.
+- One System · Many Personal Zones network supports hover information and a draggable central MovI hub.
+- The MovI System evolution graphic uses six translucent pastel rectangles. Hover/focus a rectangle to expand it and update the evolution information. The Platform section has been removed.
+- The interface page now contains layout placeholders for the in-car screen design and companion mobile application. Design links can be added later.
 
-EDITING
-- Click “Edit content” at the bottom-right to edit headlines, paragraphs, labels and other text directly on the site.
-- Save stores those edits in the current browser only.
-- Use Export to create a JSON file and send it to teammates. They can use Import on their browser to apply the same text edits.
-- This is not yet real-time multi-user editing. That requires a shared backend/database connection.
-
-NEUE MACHINA
-The website requests “Neue Machina” for headings. The font is commercial and is not bundled in this package. To display it consistently for all visitors, obtain the appropriate webfont licence from Pangram Pangram and place the licensed WOFF2 file at fonts/neue-machina.woff2. The CSS is already configured to load that path. If the font is installed locally, the site will use it automatically; otherwise it falls back to Arial.
-
-PROTOTYPE NOTE
-The embedded prototype requests camera access through the browser. Use the public HTTPS GitHub Pages URL and allow camera permission. Recognition and other prototype functions depend on the included prototype's external model/library availability and browser support. The surrounding MovI website itself does not claim to be a production vehicle system.
+Publishing
+Upload the contents of this folder to the root of your GitHub Pages repository, replacing index.html. Keep prototype.html in the root for later use. If using Neue Machina, add your licensed font file at fonts/neue-machina.woff2.
